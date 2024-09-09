@@ -1,0 +1,172 @@
+#include "EmployeeBook.h"
+#include
+
+void addEmployee(Employee employees[], int& count)
+{
+if (count >= MAX_EMPLOYEES)
+{
+cout << "No spare data left." << endl;
+return;
+}
+
+Employee emp;
+cout << "Enter surname: ";
+cin >> emp.lastName;
+cout << "Enter name: ";
+cin >> emp.firstName;
+cout << "Enter salary: ";
+cin >> emp.salary;
+cout << "Enter phone number: ";
+cin >> emp.phone;
+
+employees[count++] = emp;
+}
+
+void displayAllEmployees(Employee employees[], int count)
+{
+for (int i = 0; i < count; i++)
+{
+cout << "Surname: " << employees[i].lastName
+<< ", Name: " << employees[i].firstName
+<< ", Salary: " << employees[i].salary
+<< ", Phone number: " << employees[i].phone << endl;
+}
+}
+
+void findEmployeeByLastName(Employee employees[], int count, const char lastName[])
+{
+for (int i = 0; i < count; i++) {
+if (strcmp(employees[i].lastName, lastName) == 0)
+{
+cout << "Employee found - Surname: " << employees[i].lastName
+<< ", Name: " << employees[i].firstName
+<< ", Salary: " << employees[i].salary
+<< ", Phone number: " << employees[i].phone << endl;
+return;
+}
+}
+cout << "Employee with surname " << lastName << " isn't found." << endl;
+}
+
+void findEmployeesBySalaryRange(Employee employees[], int count, double minSalary, double maxSalary)
+{
+for (int i = 0; i < count; i++) {
+if (employees[i].salary >= minSalary && employees[i].salary <= maxSalary)
+{
+cout << "Surname: " << employees[i].lastName
+<< ", Name: " << employees[i].firstName
+<< ", Salary: " << employees[i].salary
+<< ", Phone number: " << employees[i].phone << endl;
+}
+}
+}
+
+void sortByLastName(Employee employees[], int count)
+{
+for (int i = 0; i < count - 1; i++)
+{
+for (int j = i + 1; j < count; j++)
+{
+if (strcmp(employees[i].lastName, employees[j].lastName) > 0)
+{
+Employee temp = employees[i];
+employees[i] = employees[j];
+employees[j] = temp;
+}
+}
+}
+cout << "Employees are sorted by surname." << endl;
+}
+
+void deleteEmployee(Employee employees[], int& count, const char lastName[])
+{
+int index = -1;
+for (int i = 0; i < count; i++)
+{
+if (strcmp(employees[i].lastName, lastName) == 0)
+{
+index = i;
+break;
+}
+}
+
+if (index != -1) 
+{
+cout << "Are you sure you want to delete the employee?" << lastName << "? (y/n): ";
+char confirmation;
+cin >> confirmation;
+
+    if (confirmation == 'y' || confirmation == 'Y') 
+{
+for (int i = index; i < count - 1; i++) {
+employees[i] = employees[i + 1];
+}
+count--;
+cout << "Employee deleted." << endl;
+} else {
+cout << "Delete is cancelled." << endl;
+}
+} else {
+cout << "Employee with surname " << lastName << " isn't found." << endl;
+}
+}
+
+int main() {
+Employee employees[MAX_EMPLOYEES];
+int count = 0;
+
+int choice;
+do {
+    cout << "\n1) Add new employee\n";
+    cout << "2)Show all employees\n";
+    cout << "3) Search employee by surname\n";
+    cout << "4)Search employee by salary range\n";
+    cout << "5)Sort employees by surname\n";
+    cout << "6) Delete an employee\n";
+    cout << "0)Exit\n";
+    cout << "Choose an action: ";
+    cin >> choice;
+
+    switch (choice) {
+        case 1:
+            addEmployee(employees, count);
+            break;
+        case 2:
+            displayAllEmployees(employees, count);
+            break;
+        case 3: {
+            char lastName[MAX_NAME_LEN];
+            cout << "Enter surname: ";
+            cin >> lastName;
+            findEmployeeByLastName(employees, count, lastName);
+            break;
+        }
+        case 4: {
+            double minSalary, maxSalary;
+            cout << "Enter min salary: ";
+            cin >> minSalary;
+            cout << "Enter max salary: ";
+            cin >> maxSalary;
+            findEmployeesBySalaryRange(employees, count, minSalary, maxSalary);
+            break;
+        }
+        case 5:
+            sortByLastName(employees, count);
+            break;
+        case 6: {
+            char lastName[MAX_NAME_LEN];
+            cout << "Enter a surname to delete: ";
+            cin >> lastName;
+            deleteEmployee(employees, count, lastName);
+            break;
+        }
+        case 0:
+            cout << "Exit" << endl;
+            break;
+        default:
+            cout << "Error" << endl;
+    }
+} while (choice != 0);
+
+return 0;
+}
