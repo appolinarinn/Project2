@@ -1,0 +1,32 @@
+#ifndef EMPLOYEEBOOK_H
+#define EMPLOYEEBOOK_H
+
+#include
+
+using namespace std;
+
+const int MAX_EMPLOYEES = 100;
+const int MAX_NAME_LEN = 50;
+const int MAX_PHONE_LEN = 15;
+
+struct Employee
+{
+char lastName[MAX_NAME_LEN];
+char firstName[MAX_NAME_LEN];
+double salary;
+char phone[MAX_PHONE_LEN];
+};
+
+void addEmployee(Employee employees[], int& count);
+
+void displayAllEmployees(Employee employees[], int count);
+
+void findEmployeeByLastName(Employee employees[], int count, const char lastName[]);
+
+void findEmployeesBySalaryRange(Employee employees[], int count, double minSalary, double maxSalary);
+
+void sortByLastName(Employee employees[], int count);
+
+void deleteEmployee(Employee employees[], int& count, const char lastName[]);
+
+#endif
